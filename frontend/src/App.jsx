@@ -9,7 +9,10 @@ const App = () => {
   const [isEditTodo, setIsEditTodo] = useState(null);
 
   function updatedTodos(updatedTodo) {
-    setTodos();
+    setTodos(
+      todos.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
+    );
+    setIsEditTodo(null);
   }
   function addTodo(todo) {
     setTodos([...todos, todo]);
@@ -52,6 +55,7 @@ const App = () => {
           todos={filteredTodos}
           deleteTodo={deleteTodo}
           toggleCheckBox={toggleCheckBox}
+          setIsEditTodo={setIsEditTodo}
         />
       </div>
     </header>

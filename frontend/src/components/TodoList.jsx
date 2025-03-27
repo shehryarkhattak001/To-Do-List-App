@@ -1,6 +1,6 @@
 import React from "react";
 
-const TodoList = ({ todos, deleteTodo, toggleCheckBox }) => {
+const TodoList = ({ todos, deleteTodo, toggleCheckBox, setIsEditTodo }) => {
   console.log("Todos", todos);
   if (todos.length === 0) {
     return (
@@ -28,10 +28,12 @@ const TodoList = ({ todos, deleteTodo, toggleCheckBox }) => {
             <h4 className={`${todo.completed && "todoName"}`}>
               {todo.todoName}
             </h4>
-            <button onClick={() => setUpdate(true)}>Update </button>
-            <button onClick={() => deleteTodo(todo.id)} className="list-btn">
-              Delete
-            </button>
+            <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+              <button onClick={() => setIsEditTodo(todo)}>Update </button>
+              <button onClick={() => deleteTodo(todo.id)} className="list-btn">
+                Delete
+              </button>
+            </div>
           </div>
         );
       })}
