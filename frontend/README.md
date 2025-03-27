@@ -56,3 +56,11 @@ npm install
 - Each to-do includes:
   - A **checkbox** to mark it as completed.
   - A **delete button** to remove it from the list.
+
+### 10. Manage and Filter Your Tasks (`TodoFilter.jsx`)
+
+We created the **TodoFilter** component with filtering options for **All, Pending, and Completed** tasks.
+
+- Clicking **All** shows all todos.
+- Clicking **Completed** shows only completed ones.
+- Clicking **Pending** shows only pending tasks.

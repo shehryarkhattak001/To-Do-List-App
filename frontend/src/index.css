@@ -50,3 +50,6 @@ body {
   background-color: #ce6244;
   color: white;
 }
+.todoName {
+  text-decoration: line-through;
+}

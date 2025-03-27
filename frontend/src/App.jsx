@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
+import TodoFilter from "./components/TodoFilter";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("all");
   function addTodo(todo) {
     setTodos([...todos, todo]);
   }
@@ -14,18 +16,31 @@ const App = () => {
 
   function toggleCheckBox(id) {
     setTodos(
-      todos.filter((todo) =>
+      todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   }
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "completed") {
+      return todo.completed;
+    }
+    if (filter === "pending") {
+      return !todo.completed;
+    }
+    return true;
+  });
+
   return (
     <header className="main-header">
       <div className="card">
         <h2 className="title">To-Do List App</h2>
         <Form addTodo={addTodo} />
+        <TodoFilter setFilter={setFilter} filter={filter} />
+
         <TodoList
-          todos={todos}
+          todos={filteredTodos}
           deleteTodo={deleteTodo}
           toggleCheckBox={toggleCheckBox}
         />
