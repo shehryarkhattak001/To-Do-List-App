@@ -64,3 +64,7 @@ We created the **TodoFilter** component with filtering options for **All, Pendin
 - Clicking **All** shows all todos.
 - Clicking **Completed** shows only completed ones.
 - Clicking **Pending** shows only pending tasks.
+
+### 11. Managing State in App.jsx and Form.jsx
+
+- Making state using state uplifting to pass the function in form.jsx

@@ -10,7 +10,13 @@ const TodoList = ({ todos, deleteTodo, toggleCheckBox }) => {
     );
   }
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       {todos.map((todo) => {
         return (
           <div key={todo.id} className="todo-list">
@@ -29,7 +35,7 @@ const TodoList = ({ todos, deleteTodo, toggleCheckBox }) => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

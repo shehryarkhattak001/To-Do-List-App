@@ -6,6 +6,11 @@ import TodoFilter from "./components/TodoFilter";
 const App = () => {
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [isEditTodo, setIsEditTodo] = useState(null);
+
+  function updatedTodos(updatedTodo) {
+    setTodos();
+  }
   function addTodo(todo) {
     setTodos([...todos, todo]);
   }
@@ -36,7 +41,11 @@ const App = () => {
     <header className="main-header">
       <div className="card">
         <h2 className="title">To-Do List App</h2>
-        <Form addTodo={addTodo} />
+        <Form
+          addTodo={addTodo}
+          isEditTodo={isEditTodo}
+          updatedTodos={updatedTodos}
+        />
         <TodoFilter setFilter={setFilter} filter={filter} />
 
         <TodoList

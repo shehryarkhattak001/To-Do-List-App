@@ -1,31 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Form = ({ addTodo }) => {
+const Form = ({ addTodo, isEditTodo, updatedTodos }) => {
   const [todoName, setTodoName] = useState("");
 
+  useEffect(() => {
+    if (isEditTodo) {
+      setTodoName(isEditTodo.todoName);
+    }
+  }, [isEditTodo]);
   function submitHandler(e) {
     e.preventDefault();
     if (!todoName) {
       return;
     }
-    addTodo({
-      id: Math.random(),
-      todoName: todoName,
-      completed: false,
-    });
+    if (isEditTodo) {
+      updatedTodos({
+        ...isEditTodo,
+        todoName: todoName,
+      });
+    } else {
+      addTodo({
+        id: Math.random(),
+        todoName: todoName,
+        completed: false,
+      });
+    }
     setTodoName("");
   }
   return (
     <form className="form-todo" onSubmit={submitHandler}>
       <input
         type="text"
-        placeholder="Add a new todo"
+        placeholder={isEditTodo ? "Update a todo" : "Add a new todo"}
         onChange={(e) => {
           setTodoName(e.target.value);
         }}
         value={todoName}
       />
-      <button type="submit">Add Todo</button>
+      <button type="submit">{isEditTodo ? "Update Todo" : "Add Todo"}</button>
     </form>
   );
 };
