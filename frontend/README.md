@@ -15,3 +15,7 @@ After the project was successfully set up, I installed the necessary dependencie
 ```sh
 npm install
 ```
+
+### There are some of components
+
+#### First one is, Form component.
