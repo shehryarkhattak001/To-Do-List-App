@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Form = () => {
+const Form = ({ addTodo }) => {
   const [todoName, setTodoName] = useState("");
 
   function submitHandler(e) {
@@ -8,7 +8,11 @@ const Form = () => {
     if (!todoName) {
       return;
     }
-    console.log("The name of todo is:", todoName);
+    addTodo({
+      id: Math.random(),
+      todoName: todoName,
+      completed: false,
+    });
     setTodoName("");
   }
   return (

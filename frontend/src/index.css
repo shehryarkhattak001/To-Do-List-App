@@ -1,16 +1,22 @@
 body {
   margin: 0;
-  background-color: aquamarine;
+  /* background-color: rgb(100, 204, 170); */
+  background-image: linear-gradient(120deg, #e2c35d, #d88771);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .main-header {
+  font-size: 200%;
   width: 100%;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: aliceblue;
   margin: auto;
+  text-align: center;
 }
 .card {
   max-width: 50%;
   margin: 0 auto;
-  background-color: white;
+  /* background-color: rgb(100, 204, 170); */
 }
 .form-todo {
   display: flex;
@@ -29,4 +35,18 @@ body {
   background-color: aqua;
   border: none;
   border-radius: 20px;
+}
+.todo-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.list-btn {
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+}
+.list-btn:hover {
+  background-color: #ce6244;
+  color: white;
 }
