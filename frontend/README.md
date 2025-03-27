@@ -68,3 +68,21 @@ We created the **TodoFilter** component with filtering options for **All, Pendin
 ### 11. Managing State in App.jsx and Form.jsx
 
 - Making state using state uplifting to pass the function in form.jsx
+
+### 12. To make more beautiful we updating styling
+
+we will use icons. In react we install icons like this, write this command in your terminal and press enter
+
+```sh
+npm install react-icons
+```
+
+. Node-modules of react-icons will appear
+
+After that we add fontawesome react cdn in index.html
+
+```sh
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fon-awesome/6.0.0/css/all.min.css" />
+```
+
+And now i change the styling in TodoList.jsx, Form.js and index.css

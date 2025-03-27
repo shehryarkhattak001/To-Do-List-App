@@ -1,42 +1,39 @@
 import React from "react";
+import { FaCheck, FaTrash } from "react-icons/fa";
 
 const TodoList = ({ todos, deleteTodo, toggleCheckBox, setIsEditTodo }) => {
   console.log("Todos", todos);
   if (todos.length === 0) {
     return (
-      <div>
-        <h3>No todos</h3>
+      <div className="empty-state">
+        <h3>No todos yet! 💫</h3>
       </div>
     );
   }
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
-      {todos.map((todo) => {
-        return (
-          <div key={todo.id} className="todo-list">
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleCheckBox(todo.id)}
-            />
-            <h4 className={`${todo.completed && "todoName"}`}>
-              {todo.todoName}
-            </h4>
-            <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-              <button onClick={() => setIsEditTodo(todo)}>Update </button>
-              <button onClick={() => deleteTodo(todo.id)} className="list-btn">
-                Delete
-              </button>
-            </div>
-          </div>
-        );
-      })}
+    <div className="todo-container">
+      {todos.map((todo) => (
+        <div key={todo.id} className="todo">
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => toggleCheckBox(todo.id)}
+            className="todo-checkbox"
+          />
+
+          <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
+            {todo.todoName}
+          </span>
+
+          <button className="update-btn" onClick={() => setIsEditTodo(todo)}>
+            <FaCheck />
+          </button>
+
+          <button className="trash-btn" onClick={() => deleteTodo(todo.id)}>
+            <FaTrash />
+          </button>
+        </div>
+      ))}
     </div>
   );
 };
