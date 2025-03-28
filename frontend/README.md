@@ -87,4 +87,9 @@ After that we add fontawesome react cdn in index.html
 
 And now i change the styling in TodoList.jsx, Form.js and index.css
 
-### Frontend to Backend Scenario
+## Frontend to Backend Scenario
+
+### Setup of a Fetch Request in React
+
+- Update Form.jsx to Send Data to Backend
+- Now modifying app.jsx to fetch todos from the backend when the app loads.

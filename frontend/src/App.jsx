@@ -8,12 +8,19 @@ const App = () => {
   const [filter, setFilter] = useState("all");
   const [isEditTodo, setIsEditTodo] = useState(null);
 
-  function updatedTodos(updatedTodo) {
-    setTodos(
-      todos.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
-    );
-    setIsEditTodo(null);
-  }
+  useEffect(() => {
+    async function fetchTodos() {
+      try {
+        const response = await fetch("http://localhost:5000/todos");
+        const data = await response.json();
+        setTodos(data);
+      } catch (error) {
+        console.error("error fetching todos", error);
+      }
+    }
+    fetchTodos();
+  }, []);
+
   function addTodo(todo) {
     setTodos([...todos, todo]);
   }
@@ -47,7 +54,14 @@ const App = () => {
         <Form
           addTodo={addTodo}
           isEditTodo={isEditTodo}
-          updatedTodos={updatedTodos}
+          updatedTodos={(updatedTodo) => {
+            setTodos(
+              todos.map((todo) =>
+                todo.id === updatedTodo.id ? updatedTodo : todo
+              )
+            );
+            setIsEditTodo(null);
+          }}
         />
         <TodoFilter setFilter={setFilter} filter={filter} />
 
