@@ -45,3 +45,7 @@ Making .gitignore for node modules, when we commit on github so node modules sho
 ### 3. Setup basic Express Server
 
 - Create an `index.js` file. and write a todo code
+
+### 4. Configure PostgreSQL Database
+
+- Install database from windows
