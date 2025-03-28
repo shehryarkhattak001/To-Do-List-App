@@ -49,3 +49,20 @@ Making .gitignore for node modules, when we commit on github so node modules sho
 ### 4. Configure PostgreSQL Database
 
 - Install database from windows
+- Start PostgreSQl Service - Open pgAdmin and create a new database
+
+### 5. Setup Sequelize
+
+- Initialize Sequelize
+
+```sh
+npx sequelize-cli init
+```
+
+- The folder structure will appear in front of you
+
+### 6. Now setup the database connection
+
+- Open `config/config.json` and update the development:
+
+### Backend to Frontend Scenario
