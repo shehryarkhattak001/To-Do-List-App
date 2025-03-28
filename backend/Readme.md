@@ -41,3 +41,7 @@ npm install --save-dev nodemon
 🔷 nodemon &rarr; Automatically restarts the server when code changes in the runtime for development.
 
 Making .gitignore for node modules, when we commit on github so node modules should stay here
+
+### 3. Setup basic Express Server
+
+- Create an `index.js` file. and write a todo code
