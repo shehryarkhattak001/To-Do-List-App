@@ -16,23 +16,29 @@ const Form = ({ addTodo, isEditTodo, updatedTodos }) => {
       return;
     }
 
-    const newTodo = { todoName, completed: false };
-    try {
-      const response = await fetch("http://localhost:5000/todos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTodo),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        addTodo(data);
-      }
-    } catch (error) {
-      console.log("error adding todo", error);
-    }
+    if (isEditTodo) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/todos/${isEditTodo.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ todoName }),
+          }
+        );
 
+        if (response.ok) {
+          const updatedTodo = await response.json();
+          updatedTodos(updatedTodo);
+        }
+      } catch (error) {
+        console.log("error updating todo", error);
+      }
+    } else {
+      addTodo({ id: Math.random(), todoName, completed: false });
+    }
     setTodoName("");
   }
   return (
