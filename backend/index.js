@@ -23,6 +23,31 @@ app.post("/todos", async (req, res) => {
   }
 });
 
+app.get("/todo", async (req, res) => {
+  try {
+    const todos = await db.Todo.findAll();
+    res.json(todos);
+  } catch (error) {
+    console.error("error fetching todos", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await db.Todo.destroy({ where: { id } });
+    if (deleted) {
+      res.status(200).json({ message: "Todo deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Todo not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    res.status(500).json({ error: "something went wrong" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 db.sequelize.sync().then(() => {
   app.listen(PORT, () => console.log(`server running on port ${PORT}`));

@@ -10,6 +10,19 @@ const TodoList = ({ todos, deleteTodo, toggleCheckBox, setIsEditTodo }) => {
       </div>
     );
   }
+
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(`http://localhost:5000/todos/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        deleteTodo(id);
+      }
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
+  }
   return (
     <div className="todo-container">
       {todos.map((todo) => (
@@ -29,7 +42,7 @@ const TodoList = ({ todos, deleteTodo, toggleCheckBox, setIsEditTodo }) => {
             <FaCheck />
           </button>
 
-          <button className="trash-btn" onClick={() => deleteTodo(todo.id)}>
+          <button className="trash-btn" onClick={() => handleDelete(todo.id)}>
             <FaTrash />
           </button>
         </div>

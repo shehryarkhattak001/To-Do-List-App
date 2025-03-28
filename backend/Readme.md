@@ -66,3 +66,6 @@ npx sequelize-cli init
 - Open `config/config.json` and update the development:
 
 ### Backend to Frontend Scenario
+
+- Receiving data from Form
+- getting data from app.jsx

@@ -93,3 +93,4 @@ And now i change the styling in TodoList.jsx, Form.js and index.css
 
 - Update Form.jsx to Send Data to Backend
 - Now modifying app.jsx to fetch todos from the backend when the app loads.
+- Delete request in TodoList and the Get logic in handle
