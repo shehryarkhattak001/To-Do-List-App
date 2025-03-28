@@ -10,23 +10,29 @@ const Form = ({ addTodo, isEditTodo, updatedTodos }) => {
     }
   }, [isEditTodo]);
 
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
     if (!todoName.trim()) {
       return;
     }
-    if (isEditTodo) {
-      updatedTodos({
-        ...isEditTodo,
-        todoName: todoName,
+
+    const newTodo = { todoName, completed: false };
+    try {
+      const response = await fetch("http://localhost:5000/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTodo),
       });
-    } else {
-      addTodo({
-        id: Math.random(),
-        todoName: todoName,
-        completed: false,
-      });
+      const data = await response.json();
+      if (response.ok) {
+        addTodo(data);
+      }
+    } catch (error) {
+      console.log("error adding todo", error);
     }
+
     setTodoName("");
   }
   return (
