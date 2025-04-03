@@ -1,62 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { FaPlus, FaEdit } from "react-icons/fa";
+import React, { useState } from "react";
 
-const Form = ({ addTodo, isEditTodo, updatedTodos }) => {
+function Form({ fetchTodos }) {
   const [todoName, setTodoName] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (isEditTodo) {
-      setTodoName(isEditTodo.todoName);
-    }
-  }, [isEditTodo]);
-
-  async function submitHandler(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!todoName.trim()) {
-      return;
-    }
+    if (!todoName) return;
 
-    if (isEditTodo) {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/todos/${isEditTodo.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ todoName }),
-          }
-        );
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:3000/auth/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ name: todoName, completed: false }),
+      });
 
-        if (response.ok) {
-          const updatedTodo = await response.json();
-          updatedTodos(updatedTodo);
-        }
-      } catch (error) {
-        console.log("error updating todo", error);
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || "Failed to create todo.");
+      } else {
+        setTodoName("");
+        fetchTodos();
       }
-    } else {
-      addTodo({ id: Math.random(), todoName, completed: false });
+    } catch (error) {
+      setError("An error occurred while creating the todo.");
+      console.log("Error", error);
+    } finally {
+      setLoading(false);
     }
-    setTodoName("");
-  }
+  };
+
   return (
-    <form className="form-todo" onSubmit={submitHandler}>
-      <input
-        type="text"
-        className="todo-input"
-        placeholder={isEditTodo ? "Update a todo..." : "Add a new todo..."}
-        onChange={(e) => {
-          setTodoName(e.target.value);
-        }}
-        value={todoName}
-      />
-      <button type="submit" className="todo-btn">
-        {isEditTodo ? <FaEdit /> : <FaPlus />}
+    <form className="todo-form" onSubmit={handleSubmit}>
+      <div className="input-container">
+        <label htmlFor="todo-name">Todo Name</label>
+        <input
+          id="todo-name"
+          type="text"
+          value={todoName}
+          className="input"
+          onChange={(e) => setTodoName(e.target.value)}
+          placeholder="Enter new todo"
+          disabled={loading}
+        />
+      </div>
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Adding..." : "Add Todo"}
       </button>
+
+      {error && <div className="error-message">{error}</div>}
     </form>
   );
-};
+}
 
 export default Form;

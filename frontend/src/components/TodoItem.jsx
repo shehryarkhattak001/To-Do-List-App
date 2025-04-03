@@ -12,7 +12,7 @@ const TodoItem = ({ todo, fetchTodos }) => {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/update-todo/auth/${todoId}`,
+        `http://localhost:3000/auth/todos/${todoId}`,
         {
           method: "PUT",
           body: JSON.stringify({ name: newName, completed: todoCompleted }),
@@ -42,7 +42,7 @@ const TodoItem = ({ todo, fetchTodos }) => {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/delete-todo/auth/${todo.id}`,
+        `http://localhost:3000/auth/todos/${todo.id}`,
         {
           method: "DELETE",
           headers: {
@@ -74,7 +74,7 @@ const TodoItem = ({ todo, fetchTodos }) => {
     <div className="todo-item">
       <input
         type="checkbox"
-        checked="todo.completed"
+        checked={todo.completed}
         onChange={toggleCompletionHandler}
       />
       <span className={`${todo.completed && "todo-completed"}`}>
