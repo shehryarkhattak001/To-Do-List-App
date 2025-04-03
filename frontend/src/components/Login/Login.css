@@ -1,89 +1,96 @@
 /* Login Form Styles */
-.form {
+body {
+  margin: 0;
+  background: linear-gradient(120deg, #e2c35d, #d88771);
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.form-login {
   max-width: 400px;
-  margin: 50px auto;
   padding: 30px;
-  background: #ffffff;
+  background: white;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 24px;
+  color: #010301;
+  font-size: 26px;
+  font-weight: 600;
 }
 
-.input {
+.input-login {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
   font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.input:focus {
-  border-color: #007bff;
   outline: none;
-  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.2);
+  transition: border 0.3s;
 }
 
-.error {
-  color: red;
-  font-size: 14px;
-  margin-top: -8px;
-  margin-bottom: 10px;
-  text-align: left;
+.input-login:focus {
+  border-color: #ff9800;
 }
 
-.success {
-  color: green;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.btn {
+.btn-login {
   width: 100%;
   padding: 12px;
-  background: #007bff;
-  color: #fff;
+  background: #4caf50;
+  color: white;
   font-size: 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease;
 }
 
-.btn:hover {
-  background: #0056b3;
+.btn-login:hover {
+  background: #388e3c;
 }
 
-.btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.google-btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #db4437;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
 }
 
-.toggle-form {
-  color: #007bff;
+.google-btn-login:hover {
+  background: #c1351d;
+}
+
+.toggle-form-login {
+  color: #4caf50;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 5px;
+  display: inline-block;
+  margin-top: 10px;
 }
 
-.toggle-form:hover {
+.toggle-form-login:hover {
   text-decoration: underline;
 }
 
+/* Responsive */
 @media (max-width: 480px) {
-  .form {
+  .form-login {
     padding: 20px;
-    margin: 30px auto;
   }
 
-  .btn {
+  .btn-login {
     font-size: 16px;
   }
 }
