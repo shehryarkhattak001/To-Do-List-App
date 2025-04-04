@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrash,
+  faPen,
+  faCheck,
+  faSave,
+} from "@fortawesome/free-solid-svg-icons";
+import "./TodoItem.css";
 
 const TodoItem = ({ todo, fetchTodos }) => {
   const [update, setUpdate] = useState(false);
@@ -31,7 +39,6 @@ const TodoItem = ({ todo, fetchTodos }) => {
       }
     } catch (error) {
       setError("An error occurred while updating the todo.");
-      console.log("Error", error);
     } finally {
       setUpdateLoading(false);
     }
@@ -59,7 +66,6 @@ const TodoItem = ({ todo, fetchTodos }) => {
       }
     } catch (error) {
       setError("An error occurred while deleting the todo.");
-      console.log("Error", error);
     } finally {
       setDeleteLoading(false);
     }
@@ -76,12 +82,14 @@ const TodoItem = ({ todo, fetchTodos }) => {
         type="checkbox"
         checked={todo.completed}
         onChange={toggleCompletionHandler}
+        className="todo-checkbox"
       />
-      <span className={`${todo.completed && "todo-completed"}`}>
+
+      <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
         {update ? (
           <input
             type="text"
-            className="update-input"
+            className="todo-input"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder="Update Todo"
@@ -90,30 +98,45 @@ const TodoItem = ({ todo, fetchTodos }) => {
           todo.name
         )}
       </span>
-      <div className="btn-container">
+
+      <div className="todo-buttons">
         <button
-          onClick={() => {
-            if (update) {
-              updateHandler(todo.id, newName, todo.completed);
-            } else {
-              setUpdate(true);
-            }
-          }}
-          className="btn-update"
+          onClick={() =>
+            update
+              ? updateHandler(todo.id, newName, todo.completed)
+              : setUpdate(true)
+          }
+          className={`todo-button update-btn`}
           disabled={todo.completed || updateLoading}
         >
-          {updateLoading ? "Saving..." : update ? "Save" : "Update"}
+          {updateLoading ? (
+            "..."
+          ) : update ? (
+            <FontAwesomeIcon icon={faSave} />
+          ) : (
+            <FontAwesomeIcon icon={faPen} />
+          )}
         </button>
 
         <button
           onClick={() => deleteHandler(todo)}
-          className="btn-delete"
+          className="todo-button delete-btn"
           disabled={deleteLoading}
         >
-          {deleteLoading ? "Deleting..." : "Delete"}
+          {deleteLoading ? "..." : <FontAwesomeIcon icon={faTrash} />}
         </button>
+
+        {!todo.completed && (
+          <button
+            onClick={toggleCompletionHandler}
+            className="todo-button complete-btn"
+          >
+            <FontAwesomeIcon icon={faCheck} />
+          </button>
+        )}
       </div>
-      {error && <div className="error">{error}</div>}
+
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };
