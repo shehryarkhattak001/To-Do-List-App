@@ -1,17 +1,17 @@
 const { Todo } = require("../models");
 
 const createTodo = async (req, res) => {
-  const { name, completed } = req.body;
+  const { name, completed, dueDate } = req.body;
   const userId = req.user.id;
 
   if (!name) {
     return res.status(400).json({ error: "'name' is required" });
   }
-
   try {
     const todo = await Todo.create({
       name,
       completed: completed !== undefined ? completed : false,
+      dueDate,
       userId,
     });
     console.log("Todo", todo);
@@ -44,7 +44,7 @@ const getTodos = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const userId = req.user.id;
-  const { name, completed } = req.body;
+  const { name, completed, dueDate } = req.body;
   console.log("Completed", completed);
   const { id } = req.params;
 
@@ -62,7 +62,7 @@ const updateTodo = async (req, res) => {
     }
 
     const todoUpdate = await Todo.update(
-      { name, completed },
+      { name, completed, dueDate },
       { where: { id, userId } }
     );
 

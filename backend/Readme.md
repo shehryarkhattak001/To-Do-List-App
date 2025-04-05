@@ -220,4 +220,8 @@ Now, we will implement the following routes for handling todos:
 
 Each of these endpoints will include JWT authentication to ensure only authenticated users can access and modify their todos.
 
+first hamny lib ka folder banaya, phir hmny mailTrap.js ky naam se file bnayiii usmy kuch code likha, usky bad package install kia
+npm i node-cron ka
+phir index me kuch code likha
+
 ---

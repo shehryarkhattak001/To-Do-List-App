@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -29,6 +30,15 @@ module.exports = (sequelize, DataTypes) => {
       completed: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      dueDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+          isDate: {
+            msg: "Due date must be a valid date",
+          },
+        },
       },
     },
     {

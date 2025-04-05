@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -11,6 +12,9 @@ import "./TodoItem.css";
 const TodoItem = ({ todo, fetchTodos }) => {
   const [update, setUpdate] = useState(false);
   const [newName, setNewName] = useState(todo.name);
+  const [newDueDate, setNewDueDate] = useState(
+    todo.dueDate ? moment(todo.dueDate).format("YYYY-MM-DD") : ""
+  );
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +27,11 @@ const TodoItem = ({ todo, fetchTodos }) => {
         `http://localhost:3000/auth/todos/${todoId}`,
         {
           method: "PUT",
-          body: JSON.stringify({ name: newName, completed: todoCompleted }),
+          body: JSON.stringify({
+            name: newName,
+            dueDate: newDueDate,
+            completed: todoCompleted,
+          }),
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage?.getItem("token"),
@@ -87,15 +95,32 @@ const TodoItem = ({ todo, fetchTodos }) => {
 
       <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
         {update ? (
-          <input
-            type="text"
-            className="todo-input"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="Update Todo"
-          />
+          <>
+            <input
+              type="text"
+              className="todo-input"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Update Todo"
+            />
+            <input
+              type="date"
+              className="todo-input"
+              value={newDueDate}
+              onChange={(e) => setNewDueDate(e.target.value)}
+              min={moment().format("YYYY-MM-DD")}
+            />
+          </>
         ) : (
-          todo.name
+          <>
+            <strong>{todo.name}</strong>
+            <div className="todo-due-date">
+              Due:
+              {todo.dueDate
+                ? moment(todo.dueDate).format("MMM D, YYYY")
+                : "No due date"}
+            </div>
+          </>
         )}
       </span>
 

@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import moment from "moment";
 
 function Form({ fetchTodos }) {
   const [todoName, setTodoName] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!todoName) return;
+    if (!todoName || !dueDate) {
+      setError("Please enter todo name and select a due date.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -17,7 +22,11 @@ function Form({ fetchTodos }) {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-        body: JSON.stringify({ name: todoName, completed: false }),
+        body: JSON.stringify({
+          name: todoName,
+          dueDate: dueDate,
+          completed: false,
+        }),
       });
 
       const data = await response.json();
@@ -25,6 +34,7 @@ function Form({ fetchTodos }) {
         setError(data.message || "Failed to create todo.");
       } else {
         setTodoName("");
+        setDueDate("");
         fetchTodos();
       }
     } catch (error) {
@@ -46,6 +56,19 @@ function Form({ fetchTodos }) {
           className="input"
           onChange={(e) => setTodoName(e.target.value)}
           placeholder="Enter new todo"
+          disabled={loading}
+        />
+      </div>
+
+      <div className="input-container">
+        <label htmlFor="due-date">Due Date</label>
+        <input
+          id="due-date"
+          type="date"
+          value={dueDate}
+          className="input"
+          onChange={(e) => setDueDate(e.target.value)}
+          min={moment().format("YYYY-MM-DD")} // disables past dates
           disabled={loading}
         />
       </div>
