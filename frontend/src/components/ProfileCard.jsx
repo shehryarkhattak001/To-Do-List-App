@@ -3,22 +3,25 @@ import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa";
 import img from "../assets/shery.jpg";
 import "./profileCard.css";
 
-const ProfileCard = ({ handleLogout, setActiveSection }) => {
+const ProfileCard = ({ handleLogout, setActiveSection, profile }) => {
   return (
     <div className="profile-card-wrapper">
       <div className="top-section">
-        <img src={img} alt="Profile" className="profile-image" />
+        <img
+          src={profile.image || img}
+          alt="Profile"
+          className="profile-image"
+        />
       </div>
 
       <div className="bottom-section">
-        <h2 className="name">Shehryar Khan</h2>
-        <h3 className="title">Full Stack Developer</h3>
+        <h2 className="name">
+          {profile.firstName} {profile.lastName}
+        </h2>
+        <h3 className="title">{profile.title || "Full Stack Developer"}</h3>{" "}
+        {/* Title */}
         <hr className="line" />
-        <p className="description">
-          I love solving visual problems and building beautiful full-stack web
-          apps with modern UI/UX.
-        </p>
-
+        <p className="description">{profile.bio}</p>
         <div className="social-icons">
           <a href="#">
             <FaInstagram />
@@ -30,7 +33,6 @@ const ProfileCard = ({ handleLogout, setActiveSection }) => {
             <FaFacebook />
           </a>
         </div>
-
         <div className="action-buttons">
           <button
             className="btn-settings"

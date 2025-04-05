@@ -7,7 +7,6 @@ import Settings from "./components/Setting";
 import Notifications from "./components/Notification";
 import ProfileCard from "./components/ProfileCard";
 
-// Navbar Component
 const Navbar = ({ setActiveSection, activeSection, toggleProfileCard }) => {
   return (
     <nav className="navbar">
@@ -34,15 +33,26 @@ const Navbar = ({ setActiveSection, activeSection, toggleProfileCard }) => {
   );
 };
 
-// App Component
 const App = () => {
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
   const [activeSection, setActiveSection] = useState("todoDashboard");
   const [isProfileCardOpen, setIsProfileCardOpen] = useState(false);
+  const [profile, setProfile] = useState(() => {
+    const savedProfile = localStorage.getItem("profile");
+    return savedProfile
+      ? JSON.parse(savedProfile)
+      : {
+          image: "../assets/default-avatar.png",
+          firstName: "Shehryar",
+          lastName: "Khan",
+          title: "Full Stack Developer", // Default title
+          bio: "I love solving visual problems and building beautiful full-stack web apps with modern UI/UX.",
+        };
+  });
+
   const profileCardRef = useRef(null);
 
-  // Fetch token from localStorage on mount
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (savedToken) {
@@ -50,18 +60,16 @@ const App = () => {
     }
   }, []);
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken("");
+    localStorage.removeItem("profile"); // Optionally clear profile on logout
   };
 
-  // Toggle profile card visibility
   const toggleProfileCard = () => {
     setIsProfileCardOpen((prev) => !prev);
   };
 
-  // Close profile card when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -75,23 +83,31 @@ const App = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Optional: close profile card on section change
   useEffect(() => {
     setIsProfileCardOpen(false);
   }, [activeSection]);
 
-  // Section switcher
   const renderContent = () => {
     switch (activeSection) {
       case "todoDashboard":
         return <TodoCard />;
       case "settings":
-        return <Settings />;
+        return (
+          <Settings
+            updateProfile={updateProfile}
+            setActiveSection={setActiveSection}
+          />
+        );
       case "notifications":
         return <Notifications />;
       default:
         return <TodoCard />;
     }
+  };
+
+  const updateProfile = (updatedProfile) => {
+    setProfile(updatedProfile);
+    localStorage.setItem("profile", JSON.stringify(updatedProfile)); // Save updated profile to localStorage
   };
 
   return (
@@ -109,6 +125,7 @@ const App = () => {
               <ProfileCard
                 handleLogout={handleLogout}
                 setActiveSection={setActiveSection}
+                profile={profile}
               />
             </div>
           )}
