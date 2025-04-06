@@ -151,10 +151,10 @@ import "./App.css";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import TodoCard from "./components/TodoCard/TodoCard";
-import Settings from "./components/Setting";
-import Notifications from "./components/Notification";
-import ProfileCard from "./components/ProfileCard";
-import ChangePassword from "./components/ChangePassword"; // ✅
+import Settings from "./components/Setting/Setting";
+import Notifications from "./components/Notification/Notification";
+import ProfileCard from "./components/ProfileCard/ProfileCard";
+import ChangePassword from "./components/ChangePassword/ChangePassword"; // ✅
 
 const Navbar = ({ setActiveSection, activeSection, toggleProfileCard }) => {
   return (

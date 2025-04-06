@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Form from "../Form";
-import TodoFilter from "../TodoFilter";
-import TodoList from "../TodoList";
+import Form from "../Form/Form";
+import TodoFilter from "../TodoFilter/TodoFilter";
+import TodoList from "../TodoList/TodoList";
 
 function TodoCard() {
   const [todos, setTodos] = useState([]);

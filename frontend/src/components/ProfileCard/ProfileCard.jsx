@@ -1,6 +1,6 @@
 import React from "react";
 import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa";
-import img from "../assets/shery.jpg";
+import img from "../../assets/shery.jpg";
 import "./ProfileCard.css";
 
 const ProfileCard = ({ handleLogout, setActiveSection, profile }) => {
