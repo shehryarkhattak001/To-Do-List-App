@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
-const { OAuth2Client } = require("google-auth-library");
 
 const authenticate = (req, res, next) => {
   const { authorization } = req.headers;
@@ -11,18 +10,13 @@ const authenticate = (req, res, next) => {
   }
 
   const token = authorization.split(" ")[1];
-  console.log("Token", token);
-
   if (!token) {
     return res.status(401).json({ error: "Token is missing" });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded value", decoded.id);
-
-    req.user = decoded;
-
+    req.user = decoded; // 👈 Pass user data like id to next middleware/controller
     next();
   } catch (error) {
     return res.status(401).json({ error: "Invalid or expired token" });

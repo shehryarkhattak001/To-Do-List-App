@@ -12,7 +12,8 @@ app.use(express.json());
 const cron = require("node-cron");
 app.use(cors());
 
-// Authentication routes
+app.use("/", router);
+
 app.post("/auth", AuthController.googleAuth, AuthController.googleLogin);
 app.get("/oauth", AuthController.googleLogin);
 app.use("/auth", router);
