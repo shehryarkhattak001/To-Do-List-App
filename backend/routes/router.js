@@ -6,7 +6,7 @@ const { authenticate } = require("../middleware/authmiddleware");
 
 router.post("/signup", AuthenticationController.registerUser);
 router.post("/login", AuthenticationController.loginUser);
-router.post(
+router.put(
   "/change-password",
   authenticate,
   AuthenticationController.changePassword
