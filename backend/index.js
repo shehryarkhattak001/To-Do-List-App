@@ -14,8 +14,7 @@ app.use(cors());
 
 app.use("/", router);
 
-app.post("/auth", AuthController.googleAuth, AuthController.googleLogin);
-app.get("/oauth", AuthController.googleLogin);
+app.get("/auth/google", AuthController.googleLogin);
 app.use("/auth", router);
 
 async function checkOverdueTodos() {

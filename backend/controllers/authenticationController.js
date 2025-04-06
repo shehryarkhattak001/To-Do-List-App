@@ -1,10 +1,8 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
-const { OAuth2Client } = require("google-auth-library");
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
-const fetch = require("node-fetch");
 const authenticate = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -98,54 +96,48 @@ const loginUser = async (req, res) => {
 };
 
 const googleLogin = async (req, res) => {
-  if (req.method === "POST") {
-    console.log("Post wala method");
-    console.log("Request", req.url);
-    return res.json({ url: req.url });
-  }
-
-  const code = req.query.code;
-  if (!code) {
-    return res.status(400).json({ error: "Missing authorization code" });
-  }
-  const oAuth2Client = new OAuth2Client(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    "http://127.0.0.1:3000/oauth"
-  );
-
   try {
-    const { tokens } = await oAuth2Client.getToken(code);
-    req.tokens = tokens;
+    const { code } = req.query;
+    const googleRes = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(googleRes.tokens);
 
-    await oAuth2Client.setCredentials(res.tokens);
-    console.log("Tokens acquired");
+    const userRes = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+    );
 
-    const user = oAuth2Client.credentials;
-    console.log("Credentials", user);
+    const { email, name, picture } = userRes.data;
 
-    const userData = await fetchUserData(tokens.access_token);
+    let user = await User.findOne({ where: { email } });
 
-    res.json({ user: userData });
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+      user = await User.create({
+        email,
+        fullName: name,
+        username: name.toLowerCase().replace(/\s+/g, "_"),
+        userType: "google",
+        userProfile: picture,
+        password: hashedPassword,
+      });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+
+    res.status(200).json({
+      token,
+      fullName: user.fullName,
+      username: user.username,
+      userProfile: user.userProfile,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to authenticate with Google", details: error });
+    console.error("Google login error:", error);
+    res.status(500).json({
+      error: "Failed to authenticate with Google",
+      details: error.message,
+    });
   }
-};
-
-const fetchUserData = async (access_token) => {
-  const response = await fetch(
-    `    https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}
-`
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data from Google");
-  }
-
-  const userData = await response.json();
-  return userData;
 };
 
 const changePassword = async (req, res) => {
