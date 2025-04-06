@@ -215,6 +215,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 10px;
   padding: 15px;
   background: #fff;
   border-radius: 10px;
@@ -268,7 +269,6 @@ body {
   background: #45a049;
 }
 
-/* General styles */
 .settings-wrapper {
   max-width: 500px;
   margin: 0 auto;
@@ -286,7 +286,6 @@ h1 {
   color: #333;
 }
 
-/* Profile Picture Section */
 .profile-picture-wrapper {
   text-align: center;
   margin-bottom: 30px;
@@ -334,7 +333,6 @@ h1 {
   cursor: pointer;
 }
 
-/* Input Fields */
 .input-fields {
   margin-bottom: 20px;
 }
@@ -357,7 +355,6 @@ h1 {
   border-color: #ff8800;
 }
 
-/* Submit Button */
 .submit-btn {
   width: 100%;
   padding: 12px;
@@ -374,7 +371,6 @@ h1 {
   background-color: #b37100;
 }
 
-/* Responsive Design */
 @media (max-width: 600px) {
   .settings-wrapper {
     padding: 15px;
@@ -384,4 +380,25 @@ h1 {
     width: 100px;
     height: 100px;
   }
+}
+
+.due-date {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.due-date:focus {
+  border-color: #007bff;
+  background-color: #e9f5ff;
+  outline: none;
+}
+
+.due-date:disabled {
+  background-color: #f0f0f0;
+  border-color: #ddd;
+  cursor: not-allowed;
 }

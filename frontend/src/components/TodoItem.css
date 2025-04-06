@@ -19,6 +19,7 @@
   flex: 1;
   font-size: 18px;
   margin: 0 12px;
+  width: 300px;
   color: #333;
 }
 
@@ -31,7 +32,7 @@
   border: 1px solid #ccc;
   padding: 6px 10px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 20px;
   width: 100%;
 }
 

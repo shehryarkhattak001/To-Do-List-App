@@ -19,14 +19,14 @@ const Navbar = ({ setActiveSection, activeSection, toggleProfileCard }) => {
         </li>
       </ul>
       <ul className="right-nav">
-        <li
-          className={activeSection === "notifications" ? "active" : ""}
-          onClick={() => setActiveSection("notifications")}
-        >
-          Notifications
-        </li>
         <li onClick={toggleProfileCard} className="profile-button">
           Profile
+        </li>
+        <li
+          className={activeSection === "changePassword" ? "active" : ""}
+          // onClick={() => setActiveSection("changePassword")}
+        >
+          Change Password
         </li>
       </ul>
     </nav>
@@ -46,7 +46,7 @@ const App = () => {
           image: "../assets/default-avatar.png",
           firstName: "Shehryar",
           lastName: "Khan",
-          title: "Full Stack Developer", // Default title
+          title: "Full Stack Developer",
           bio: "I love solving visual problems and building beautiful full-stack web apps with modern UI/UX.",
         };
   });
@@ -63,7 +63,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken("");
-    localStorage.removeItem("profile"); // Optionally clear profile on logout
+    localStorage.removeItem("profile");
   };
 
   const toggleProfileCard = () => {

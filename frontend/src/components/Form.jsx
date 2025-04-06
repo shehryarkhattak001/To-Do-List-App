@@ -66,7 +66,7 @@ function Form({ fetchTodos }) {
           id="due-date"
           type="date"
           value={dueDate}
-          className="input"
+          className="input due-date"
           onChange={(e) => setDueDate(e.target.value)}
           min={moment().format("YYYY-MM-DD")} // disables past dates
           disabled={loading}
