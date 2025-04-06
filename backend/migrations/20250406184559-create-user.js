@@ -9,11 +9,32 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      username: {
+        type: Sequelize.STRING
+      },
+      fullName: {
+        type: Sequelize.STRING
+      },
       email: {
         type: Sequelize.STRING
       },
       password: {
         type: Sequelize.STRING
+      },
+      userProfile: {
+        type: Sequelize.STRING
+      },
+      ofile: {
+        type: Sequelize.STRING
+      },
+      userType: {
+        type: Sequelize.STRING
+      },
+      resetToken: {
+        type: Sequelize.STRING
+      },
+      resetTokenExpiry: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

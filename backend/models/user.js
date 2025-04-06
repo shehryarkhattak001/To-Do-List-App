@@ -1,12 +1,13 @@
 "use strict";
 const bcrypt = require("bcryptjs");
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
-     * The models/index file will call this method automatically.
+     * The `models/index` file will call this method automatically.
      */
     static associate(models) {
       // define association here
@@ -19,6 +20,25 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          notEmpty: {
+            msg: "Username cannot be empty",
+          },
+        },
+      },
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Full name cannot be empty",
+          },
+        },
+      },
       email: {
         type: DataTypes.STRING,
         unique: true,
@@ -34,12 +54,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Password cannot be empty",
-          },
+        allowNull: true,
+      },
+      resetToken: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      resetTokenExpiry: {
+        type: DataTypes.DATE,
+        defaultValue: () => {
+          return new Date(Date.now() + 3600 * 1000);
         },
+      },
+      userProfile: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        allowNull: false,
+      },
+
+      userType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "default",
       },
     },
     {
@@ -47,7 +83,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       hooks: {
         beforeCreate: async (user) => {
-          user.password = await bcrypt.hash(user.password, 10);
+          if (user.password) {
+            user.password = await bcrypt.hash(user.password, 10);
+          }
         },
       },
     }
