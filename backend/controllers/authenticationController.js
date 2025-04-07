@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
+const axios = require("axios");
+const { oauth2Client } = require("../utils/googleConfig");
 const authenticate = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -30,16 +32,32 @@ const authenticate = (req, res, next) => {
 };
 
 const registerUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { fullName, email, password } = req.body;
+  const emailLower = email.toLowerCase();
+  // const username = fullName.toLowerCase();
 
   try {
-    const userExists = await User.findOne({ where: { email } });
+    const userExists = await User.findOne({ where: { email: emailLower } });
 
     if (userExists) {
+      if (userExists.type === "google") {
+        res.status(400).json({
+          message:
+            "This email is already registered via Google. Please login using Google or reset your password.",
+        });
+        return;
+      }
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const newUser = await User.create({ username, email, password });
+    const newUser = await User.create({
+      fullName,
+      username,
+      email: emailLower,
+      password,
+      type: "local",
+    });
+
     res
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
@@ -47,41 +65,35 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Error registering user", error });
   }
 };
-function googleAuth(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Referer-Policy", "no-referrer-when-downgrade");
 
-  const redirectUrl = "http://127.0.0.1:3000/oauth";
-
-  const oAuth2Client = new OAuth2Client(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    redirectUrl
-  );
-
-  const authorizeUrl = oAuth2Client.generateAuthUrl({
-    access_type: "offline",
-    scope: "https://www.googleapis.com/auth/userinfo.profile openid",
-    prompt: "consent",
-  });
-  req.url = authorizeUrl;
-  next();
-}
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  const emailLower = email.toLowerCase();
 
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: emailLower } });
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-
+    console.log("User lsadkf;9ozsdjklxc", user);
     const isPasswordValid = await bcrypt.compare(
       password,
       user.dataValues.password
     );
-
-    console.log("ISPASSWORD", isPasswordValid);
+    if (isPasswordValid) {
+      const token = jwt.sign(
+        { id: user.dataValues.id },
+        process.env.JWT_SECRET
+      );
+      return res.status(200).json({ message: "Login successful", token });
+    }
+    if (user.userType === "google" && !isPasswordValid) {
+      return res.status(400).json({
+        message:
+          "This account was created using Google. Please login via 'Continue with Google' or reset your password.",
+      });
+    }
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -163,7 +175,6 @@ module.exports = {
   authenticate,
   registerUser,
   loginUser,
-  googleAuth,
   googleLogin,
   changePassword,
 };
