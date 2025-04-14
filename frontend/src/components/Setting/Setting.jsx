@@ -6,26 +6,26 @@ const Setting = ({ updateProfile, setActiveSection }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
-  const [title, setTitle] = useState(""); // Add title state
+  const [title, setTitle] = useState("");
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setFile(URL.createObjectURL(file));
-  };
-
-  const handleAvatarSelect = (selectedAvatar) => {
-    setAvatar(selectedAvatar);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(URL.createObjectURL(uploadedFile));
+    }
   };
 
   const handleSubmit = () => {
-    updateProfile({
+    const updated = {
       image: file || avatar,
       firstName,
       lastName,
       bio,
-      title, // Include title in updated profile
-    });
+      title,
+    };
 
+    updateProfile(updated);
+    localStorage.setItem("userProfile", JSON.stringify(updated));
     setActiveSection("todoDashboard");
   };
 
@@ -69,7 +69,7 @@ const Setting = ({ updateProfile, setActiveSection }) => {
         />
         <input
           type="text"
-          placeholder="Title" // Add title input field
+          placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />

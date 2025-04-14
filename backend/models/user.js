@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
+     * The models/index file will call this method automatically.
      */
     static associate(models) {
       // define association here
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       resetToken: {
         type: DataTypes.STRING,
@@ -69,12 +69,12 @@ module.exports = (sequelize, DataTypes) => {
       userProfile: {
         type: DataTypes.STRING,
         defaultValue: null,
-        allowNull: false,
+        allowNull: true,
       },
 
       userType: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         defaultValue: "default",
       },
     },

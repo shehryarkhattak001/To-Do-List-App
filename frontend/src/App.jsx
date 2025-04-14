@@ -38,21 +38,16 @@ const App = () => {
   const [activeSection, setActiveSection] = useState("todoDashboard");
   const [isProfileCardOpen, setIsProfileCardOpen] = useState(false);
 
-  const [profile, setProfile] = useState("");
-  const [username, setUsername] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [profile, setProfile] = useState({});
   const profileCardRef = useRef(null);
 
   useEffect(() => {
-    const savedToken = localStorage?.getItem("token");
-    const stored = localStorage?.getItem("userProfile");
-    const userName = localStorage?.getItem("userName");
-    const fullUserName = localStorage?.getItem("fullName");
+    const savedToken = localStorage.getItem("token");
+    const storedProfile = localStorage.getItem("userProfile");
+
     if (savedToken) {
       setToken(savedToken);
-      setUsername(userName);
-      setProfile(stored);
-      setFullName(fullUserName);
+      setProfile(JSON.parse(storedProfile) || {});
     }
   }, []);
 
@@ -60,7 +55,7 @@ const App = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userProfile");
     setToken("");
-    setProfile(null);
+    setProfile({});
   };
 
   const toggleProfileCard = () => {
@@ -125,8 +120,6 @@ const App = () => {
                 handleLogout={handleLogout}
                 setActiveSection={setActiveSection}
                 profile={profile}
-                username={username}
-                fullName={fullName}
               />
             </div>
           )}

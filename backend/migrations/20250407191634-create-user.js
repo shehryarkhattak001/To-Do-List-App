@@ -24,9 +24,6 @@ module.exports = {
       userProfile: {
         type: Sequelize.STRING
       },
-      ofile: {
-        type: Sequelize.STRING
-      },
       userType: {
         type: Sequelize.STRING
       },

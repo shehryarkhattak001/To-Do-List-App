@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import "./signup.css";
 import { useGoogleLogin } from "@react-oauth/google";
+// import { useNavigate } from "react-router-dom";
 
 const Signup = ({ toggleForm, setToken }) => {
+  // const navigate = useNavigate();
+
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
     confirmPassword: "",
+    fullName: "",
   });
 
   const [error, setError] = useState({
     email: "",
     password: "",
     confirmPassword: "",
+    fullName: "",
   });
+
   const [backendError, setBackendError] = useState("");
   const [googleLoading, setGoogleLoading] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -26,8 +31,8 @@ const Signup = ({ toggleForm, setToken }) => {
       [key]: value,
     });
   };
+
   const googleSigninHandler = async (authResult) => {
-    console.log("Auth code", authResult);
     if (!authResult.code) {
       setBackendError("No authorization code received from Google.");
       return;
@@ -50,7 +55,6 @@ const Signup = ({ toggleForm, setToken }) => {
       if (!response.ok) {
         throw new Error(data.message || "Google Signin failed");
       }
-      console.log("Data..........", data);
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userName", data.username);
@@ -74,6 +78,7 @@ const Signup = ({ toggleForm, setToken }) => {
     onError: googleSigninHandler,
     flow: "auth-code",
   });
+
   const submitHandle = async (e) => {
     e.preventDefault();
 
@@ -81,21 +86,28 @@ const Signup = ({ toggleForm, setToken }) => {
       email: "",
       password: "",
       confirmPassword: "",
+      fullName: "",
     };
 
+    if (!signUpForm.fullName.trim()) {
+      newError.fullName = "Full name is required";
+    }
     if (!signUpForm.email.trim()) {
       newError.email = "Email is required";
     }
-
     if (!signUpForm.password.trim()) {
       newError.password = "Password is required";
     }
-
     if (signUpForm.password !== signUpForm.confirmPassword) {
       newError.confirmPassword = "Passwords do not match";
     }
 
-    if (newError.email || newError.password || newError.confirmPassword) {
+    if (
+      newError.email ||
+      newError.password ||
+      newError.confirmPassword ||
+      newError.fullName
+    ) {
       setError(newError);
       return;
     }
@@ -105,8 +117,8 @@ const Signup = ({ toggleForm, setToken }) => {
       email: "",
       password: "",
       confirmPassword: "",
+      fullName: "",
     });
-
     setIsLoading(true);
 
     try {
@@ -117,30 +129,30 @@ const Signup = ({ toggleForm, setToken }) => {
         },
         body: JSON.stringify(signUpForm),
       });
+
       const data = await response.json();
 
       if (!response.ok) {
         if (data.message) {
           setBackendError(data.message);
         }
-
         return;
       }
 
-      if (response.ok) {
-        setSuccessMessage("Signup successful! You can now log in.");
-        setSignUpForm({
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-        toggleForm();
-      }
+      setSuccessMessage("Signup successful! You can now log in.");
+      setSignUpForm({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        fullName: "",
+      });
+      toggleForm();
     } catch (error) {
       setError({
         email: "Something went wrong. Please try again later.",
         password: "",
         confirmPassword: "",
+        fullName: "",
       });
     } finally {
       setIsLoading(false);
@@ -153,6 +165,15 @@ const Signup = ({ toggleForm, setToken }) => {
 
       {successMessage && <p className="success">{successMessage}</p>}
       {backendError && <p className="error">{backendError}</p>}
+
+      <input
+        type="text"
+        className="input"
+        placeholder="Full Name"
+        value={signUpForm.fullName}
+        onChange={(e) => signUpFormHandleChange("fullName", e.target.value)}
+      />
+      {error.fullName && <p className="error">*{error.fullName}</p>}
 
       <input
         type="email"
@@ -188,15 +209,18 @@ const Signup = ({ toggleForm, setToken }) => {
       <button className="btn" type="submit" disabled={isLoading}>
         {isLoading ? "Signing Up..." : "Sign Up"}
       </button>
+
       <button
         className="btn google-btn"
+        type="button"
         onClick={googleSignin}
         disabled={googleLoading}
       >
         {googleLoading ? "Redirecting..." : "Continue with Google"}
       </button>
+
       <p>
-        Already have an account?
+        Already have an account?{" "}
         <span className="toggle-form" onClick={toggleForm}>
           Login
         </span>
